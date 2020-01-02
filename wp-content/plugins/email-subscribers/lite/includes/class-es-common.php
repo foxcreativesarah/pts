@@ -1112,38 +1112,6 @@ Class ES_Common {
 	}
 
 	/**
-	 * Get all pages of Email Subscribers plugin
-	 *
-	 * @param array $excludes
-	 *
-	 * @return array
-	 *
-	 * @since 4.1.14
-	 */
-	public static function get_all_es_admin_screens( $excludes = array() ) {
-
-		$screens = array(
-			'toplevel_page_es_dashboard',
-			'email-subscribers_page_es_subscribers',
-			'email-subscribers_page_es_lists',
-			'email-subscribers_page_es_forms',
-			'email-subscribers_page_es_campaigns',
-			'email-subscribers_page_es_reports',
-			'email-subscribers_page_es_settings',
-			'email-subscribers_page_es_general_information',
-			'email-subscribers_page_es_pricing'
-		);
-
-		$screens = apply_filters( 'ig_es_admin_screens', $screens );
-
-		if ( count( $excludes ) > 0 ) {
-			$screens = array_diff( $screens, $excludes );
-		}
-
-		return $screens;
-	}
-
-	/**
 	 * Update Total Email Sent count
 	 *
 	 * @since 4.1.15

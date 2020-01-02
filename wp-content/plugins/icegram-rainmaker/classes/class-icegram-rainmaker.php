@@ -13,11 +13,11 @@ if ( ! class_exists( 'Rainmaker' ) ) {
 		function __construct() {
 			global $ig_rm_feedback, $ig_rm_tracker;
 
-			$feedback_version = '1.0.11';
+			$feedback_version = '1.0.15';
 
 			$this->plugin_url  = untrailingslashit( plugins_url( '/', __FILE__ ) ) . '/';
 			$this->plugin_path = untrailingslashit( plugin_dir_path( __FILE__ ) );
-			$this->version     = "1.0";
+			$this->version     = "1.1";
 
 			//welcome
 			add_action( 'admin_init', array( &$this, 'welcome' ) );
@@ -87,7 +87,7 @@ if ( ! class_exists( 'Rainmaker' ) ) {
 				$this->include_files();
 
 				// We need $ig_em_tracker in config.php file.
-                // So, load all feedback class before this inclusion
+				// So, load all feedback class before this inclusion
 				require_once( 'mailers/config.php' );
 
 				$ig_feedback_class = 'IG_Feedback_V_' . str_replace( '.', '_', $feedback_version );
@@ -164,47 +164,49 @@ if ( ! class_exists( 'Rainmaker' ) ) {
 		}
 
 		public function admin_menus() {
-            $menu_title = __( 'Docs & Support', 'icegram-rainmaker' );
-            $about      = add_submenu_page( 'edit.php?post_type=rainmaker_form', $menu_title,  $menu_title, 'manage_options', 'icegram-rainmaker-support', array( $this, 'about_screen' ) );
-            $rm_upgrade_page_title   = '<span style="color:#f18500;font-weight:bolder;">'.__( 'Upgrade', 'icegram-rainmaker' ) .'</span>'; 
-            $upgrade    = add_submenu_page( 'edit.php?post_type=rainmaker_form', $rm_upgrade_page_title,  $rm_upgrade_page_title, 'manage_options', 'icegram-rainmaker-upgrade', array( $this, 'rm_upgrade_screen' ) );
-        }
+			$menu_title            = __( 'Docs & Support', 'icegram-rainmaker' );
+			$about                 = add_submenu_page( 'edit.php?post_type=rainmaker_form', $menu_title, $menu_title, 'manage_options', 'icegram-rainmaker-support', array( $this, 'about_screen' ) );
+			$rm_upgrade_page_title = '<span style="color:#f18500;font-weight:bolder;">' . __( 'Upgrade', 'icegram-rainmaker' ) . '</span>';
+			$upgrade               = add_submenu_page( 'edit.php?post_type=rainmaker_form', $rm_upgrade_page_title, $rm_upgrade_page_title, 'manage_options', 'icegram-rainmaker-upgrade', array( $this, 'rm_upgrade_screen' ) );
+		}
 
-        public function about_screen() {
-            include ( 'about-icegram-rainmaker.php' );
-        }
+		public function about_screen() {
+			include( 'about-icegram-rainmaker.php' );
+		}
 
-        public function rm_upgrade_screen() {        
-            // include ( 'addons.php' );
-        }
+		public function rm_upgrade_screen() {
+			// include ( 'addons.php' );
+		}
 
-        public function rm_add_admin_notices() {   
-            global $ig_rm_tracker;     
-            $screen = get_current_screen(); 
+		public function rm_add_admin_notices() {
+			global $ig_rm_tracker;
+			$screen = get_current_screen();
 
-            $all_active_plugins = $ig_rm_tracker::get_plugins();
-            if( !in_array('icegram-rainmaker-premium/icegram-rainmaker-premium.php', $all_active_plugins)){
-	        	include_once('rm-pro-features.php');
-            }
-	        if ( !in_array( $screen->id, array( 'edit-rainmaker_form', 'rainmaker_form','edit-rainmaker_lead','rainmaker_form_page_icegram-rainmaker-support', 'rainmaker_form_page_icegram-rainmaker-upgrade' ), true ) ) return;
-	        $timezone_format = _x('Y-m-d', 'timezone date format');
-	        $ig_current_date = strtotime(date_i18n($timezone_format));
-	        $ig_offer_start = strtotime("2018-11-22");
-	        $ig_offer_end = strtotime("2018-11-28");
-	        if(($ig_current_date >= $ig_offer_start) && ($ig_current_date <= $ig_offer_end)) {
-	        	include_once('rm-offer.php');
-	        }
-        }
+			$all_active_plugins = $ig_rm_tracker::get_plugins();
+			if ( ! in_array( 'icegram-rainmaker-premium/icegram-rainmaker-premium.php', $all_active_plugins ) ) {
+				include_once( 'rm-pro-features.php' );
+			}
+			if ( ! in_array( $screen->id, array( 'edit-rainmaker_form', 'rainmaker_form', 'edit-rainmaker_lead', 'rainmaker_form_page_icegram-rainmaker-support', 'rainmaker_form_page_icegram-rainmaker-upgrade' ), true ) ) {
+				return;
+			}
+			$timezone_format = _x( 'Y-m-d', 'timezone date format' );
+			$ig_current_date = strtotime( date_i18n( $timezone_format ) );
+			$ig_offer_start  = strtotime( "2018-11-22" );
+			$ig_offer_end    = strtotime( "2018-11-28" );
+			if ( ( $ig_current_date >= $ig_offer_start ) && ( $ig_current_date <= $ig_offer_end ) ) {
+				include_once( 'rm-offer.php' );
+			}
+		}
 
-        public function rm_dismiss_admin_notice(){
-        	if(isset($_GET['rm_dismiss_admin_notice']) && $_GET['rm_dismiss_admin_notice'] == '1' && isset($_GET['rm_option_name'])){
-	            $option_name = sanitize_text_field($_GET['rm_option_name']);
-	            update_option($option_name.'_icegram', true);
-	            header("Location: https://www.icegram.com/latest-valid-coupons-discounts-offers-deals/?utm_source=in_app&utm_medium=rm_banner&utm_campaign=bfcm_2018");
-	            exit();
-	        }
-	    }
-        
+		public function rm_dismiss_admin_notice() {
+			if ( isset( $_GET['rm_dismiss_admin_notice'] ) && $_GET['rm_dismiss_admin_notice'] == '1' && isset( $_GET['rm_option_name'] ) ) {
+				$option_name = sanitize_text_field( $_GET['rm_option_name'] );
+				update_option( $option_name . '_icegram', true );
+				header( "Location: https://www.icegram.com/latest-valid-coupons-discounts-offers-deals/?utm_source=in_app&utm_medium=rm_banner&utm_campaign=bfcm_2018" );
+				exit();
+			}
+		}
+
 		public function klawoo_subscribe_form() {
 			?>
             <div class="wrap">
@@ -494,7 +496,9 @@ if ( ! class_exists( 'Rainmaker' ) ) {
 
 		function enqueue_admin_styles_and_scripts() {
 			$screen = get_current_screen();
-        	if ( !in_array( $screen->id, array( 'edit-rainmaker_form', 'rainmaker_form', 'edit-rainmaker_lead', 'rainmaker_form_page_icegram-rainmaker-support', 'rainmaker_form_page_icegram-rainmaker-upgrade'), true ) ) return;
+			if ( ! in_array( $screen->id, array( 'edit-rainmaker_form', 'rainmaker_form', 'edit-rainmaker_lead', 'rainmaker_form_page_icegram-rainmaker-support', 'rainmaker_form_page_icegram-rainmaker-upgrade' ), true ) ) {
+				return;
+			}
 			wp_register_script( 'rainmaker_tiptip', $this->plugin_url . '../assets/js/jquery.tipTip.min.js', array( 'jquery' ), $this->version );
 			wp_enqueue_script( 'rainmaker_tiptip' );
 			wp_register_script( 'rainmaker_admin', $this->plugin_url . '../assets/js/admin.js', array( 'jquery', 'jquery-ui-core', 'jquery-ui-tabs', 'rainmaker_tiptip' ), $this->version );
@@ -758,8 +762,8 @@ if ( ! class_exists( 'Rainmaker' ) ) {
 			if ( ( is_object( $post ) && $post->post_type != 'rainmaker_form' ) ) {
 				return;
 			}
-			if( $column === 'shortcode'){
-					echo '<code>[rainmaker_form id="' . $post->ID . '"]</code>';
+			if ( $column === 'shortcode' ) {
+				echo '<code>[rainmaker_form id="' . $post->ID . '"]</code>';
 			}
 			// switch ( $column ) {
 			// 	case 'shortcode':
@@ -775,11 +779,11 @@ if ( ! class_exists( 'Rainmaker' ) ) {
 			unset( $existing_columns['date'] );
 			unset( $existing_columns['title'] );
 
-			$existing_columns['lead_email'] = __( 'Email', 'icegram-rainmaker' );
-			$existing_columns['lead_name']  = __( 'Name', 'icegram-rainmaker' );
-			$existing_columns['lead_subject']  = __( 'Subject', 'icegram-rainmaker' );
-			$existing_columns['lead_message']  = __( 'Message', 'icegram-rainmaker' );
-			$existing_columns['lead_date']  = __( 'Submission Date', 'icegram-rainmaker' );
+			$existing_columns['lead_email']   = __( 'Email', 'icegram-rainmaker' );
+			$existing_columns['lead_name']    = __( 'Name', 'icegram-rainmaker' );
+			$existing_columns['lead_subject'] = __( 'Subject', 'icegram-rainmaker' );
+			$existing_columns['lead_message'] = __( 'Message', 'icegram-rainmaker' );
+			$existing_columns['lead_date']    = __( 'Submission Date', 'icegram-rainmaker' );
 
 			// $existing_columns['date'] 		= $date;
 			return $existing_columns;
@@ -792,7 +796,7 @@ if ( ! class_exists( 'Rainmaker' ) ) {
 				return;
 			}
 
-			$rm_raw_data = maybe_unserialize(get_post_meta( $post->ID, 'rm_raw_data', true ));
+			$rm_raw_data = maybe_unserialize( get_post_meta( $post->ID, 'rm_raw_data', true ) );
 			switch ( $column ) {
 				case 'lead_email':
 					$email = get_post_meta( $post->ID, 'email', true );
@@ -802,24 +806,24 @@ if ( ! class_exists( 'Rainmaker' ) ) {
 				case 'lead_name':
 					$name = get_post_meta( $post->ID, 'name', true );
 					$name = ( ! empty( $name ) ) ? $name : '-';
-					echo esc_attr($name);
+					echo esc_attr( $name );
 					break;
 
 				case 'lead_subject':
 					$subject = ( ! empty( $rm_raw_data['subject'] ) ) ? $rm_raw_data['subject'] : '-';
-					echo esc_attr($subject);
+					echo esc_attr( $subject );
 					break;
 
 				case 'lead_message':
 					$message = ( ! empty( $rm_raw_data['message'] ) ) ? $rm_raw_data['message'] : '-';
-					echo esc_attr($message);
+					echo esc_attr( $message );
 					break;
 
 				case 'lead_date':
 					echo date_format( date_create( $post->post_date ), 'Y/m/d' );
 					break;
 				default :
-				break;
+					break;
 			}
 
 		}
@@ -836,7 +840,7 @@ if ( ! class_exists( 'Rainmaker' ) ) {
 		//Add HTML before FORM tag
 		function rainmaker_before_form( $form_html, $rm_form_settings, $form_id ) {
 			if ( ! empty( $form_html ) && ! empty( $rm_form_settings['rm_enable_captcha'] ) ) {
-				$form_html .= '<div id="rm_form_error_message_' . esc_attr($form_id) . '" class="rm_form_error_message" style="display:none"></div>';
+				$form_html .= '<div id="rm_form_error_message_' . esc_attr( $form_id ) . '" class="rm_form_error_message" style="display:none"></div>';
 
 			}
 
@@ -966,7 +970,7 @@ if ( ! class_exists( 'Rainmaker' ) ) {
 					$html .= '</style>';
 				}
 				$form_layout_class = ( ! empty( $rm_form_settings['rm_compact_layout'] ) ) ? 'rm_compact_layout' : '';
-				$html              .= '<div id="' . $rm_form_id . '" class="rm_form_container rainmaker_form ' . esc_attr($rm_form_settings['form_style']) . ' ' . $form_layout_class . '" data-type="rm_' . esc_attr($rm_form_settings['type']) . '" data-form-id="' . $atts['id'] . '">';
+				$html              .= '<div id="' . $rm_form_id . '" class="rm_form_container rainmaker_form ' . esc_attr( $rm_form_settings['form_style'] ) . ' ' . $form_layout_class . '" data-type="rm_' . esc_attr( $rm_form_settings['type'] ) . '" data-form-id="' . $atts['id'] . '">';
 				$html              = apply_filters( 'rainmaker_before_form', $html, $rm_form_settings, $atts['id'] );
 				$html              .= $form_html;
 				$html              = apply_filters( 'rainmaker_after_form', $html, $rm_form_settings, $atts['id'] );
@@ -1058,7 +1062,7 @@ if ( ! class_exists( 'Rainmaker' ) ) {
                                 <label class="rm_show_label"><input type="checkbox" checked disabled/></label>
                                 <label><?php _e( 'Button', 'icegram-rainmaker' ); ?></label>
                                 <input type="hidden" name="form_data[fileds][button][show]" value="yes"/>
-                                <input type="text" name="form_data[fileds][button][label]" value="<?php echo( ! empty( $form_data['fileds']['button']['label'] ) ? esc_attr($form_data['fileds']['button']['label'] ): __( 'Submit', 'icegram-rainmaker' ) ); ?>">
+                                <input type="text" name="form_data[fileds][button][label]" value="<?php echo( ! empty( $form_data['fileds']['button']['label'] ) ? esc_attr( $form_data['fileds']['button']['label'] ) : __( 'Submit', 'icegram-rainmaker' ) ); ?>">
                             </div>
                             <input type="hidden" name="form_data[fileds][button][input_type]" value="submit">
                             <input type="hidden" name="form_data[fileds][button][field_type]" value="button">
@@ -1159,7 +1163,7 @@ if ( ! class_exists( 'Rainmaker' ) ) {
 
                         <li class="rm-field-row">
                             <div><label><?php _e( 'Select Form style', 'icegram-rainmaker' ); ?></label></div>
-                            <input id="rm_style_selector" name="form_data[form_style]" type="hidden" value="<?php echo ( ! empty( $form_data['form_style'] ) ) ? esc_attr($form_data['form_style']) : '' ?>"/>
+                            <input id="rm_style_selector" name="form_data[form_style]" type="hidden" value="<?php echo ( ! empty( $form_data['form_style'] ) ) ? esc_attr( $form_data['form_style'] ) : '' ?>"/>
                             <div class="rm_grid rm_clear_fix">
                                 <div class="rm_grid_item" data-style="rm-form-style0">
                                     <label><?php _e( 'Classic', 'icegram-rainmaker' ) ?></label>
@@ -1243,14 +1247,14 @@ if ( ! class_exists( 'Rainmaker' ) ) {
                         <li class="rm-field-row">
                             <div class="rm-form-field-set">
                                 <label class="rm-bold-text"><input id='rm_mail_send' class="rm_checkbox" type="checkbox" name="form_data[rm_mail_send]" value="yes" <?php ( ! empty( $form_data['rm_mail_send'] ) ) ? checked( $form_data['rm_mail_send'], 'yes' ) : ''; ?>/><?php _e( 'Email form data to', 'icegram-rainmaker' ); ?></label>
-                                <input type="email" name="form_data[rm_mail_to]" value="<?php echo ( ! empty( $form_data['rm_mail_to'] ) ) ? esc_attr($form_data['rm_mail_to']) : '' ?>" placeholder='<?php _e( 'Enter Email Id', 'icegram-rainmaker' ); ?>'/>
+                                <input type="email" name="form_data[rm_mail_to]" value="<?php echo ( ! empty( $form_data['rm_mail_to'] ) ) ? esc_attr( $form_data['rm_mail_to'] ) : '' ?>" placeholder='<?php _e( 'Enter Email Id', 'icegram-rainmaker' ); ?>'/>
                             </div>
                         </li>
                         <li class="rm-field-row">
                             <div class="rm-form-field-set">
                                 <label class="rm-bold-text"><input class="rm_checkbox" type="checkbox" name="form_data[rm_enable_webhook]" value="yes" <?php ( ! empty( $form_data['rm_enable_webhook'] ) ) ? checked( $form_data['rm_enable_webhook'], 'yes' ) : ''; ?>/>
 									<?php _e( 'Trigger a Webhook', 'icegram-rainmaker' ); ?></label>
-                                <input type="text" name="form_data[webhook_url]" value="<?php echo ( ! empty( $form_data['webhook_url'] ) ) ? esc_attr($form_data['webhook_url']) : '' ?>" placeholder="Enter webhook url"/>
+                                <input type="text" name="form_data[webhook_url]" value="<?php echo ( ! empty( $form_data['webhook_url'] ) ) ? esc_attr( $form_data['webhook_url'] ) : '' ?>" placeholder="Enter webhook url"/>
                         </li>
                         <!-- Add more form actions here-->
 						<?php do_action( 'rainmaker_add_form_actions', $form_data ) ?>
@@ -1366,7 +1370,7 @@ if ( ! class_exists( 'Rainmaker' ) ) {
 					// wp_die();
 				} elseif ( $response_code == 200 ) {
 					//TODO :: log in response
-					error_log($response['body']);
+					error_log( $response['body'] );
 					// wp_die();
 				} else {
 					//wp_die($response['body'], 'Error in Submission', array('response' => $response_code) );

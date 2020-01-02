@@ -79,7 +79,6 @@ class ES_Forms_Table extends WP_List_Table {
 			echo $this->edit_form( absint( $form ) );
 		} else { ?>
             <h1 class="wp-heading-inline"><?php _e( 'Forms', 'email-subscribers' ) ?><a href="admin.php?page=es_forms&action=new" class="page-title-action"> <?php _e( 'Add New', 'email-subscribers' ) ?></a></h1>
-			<?php Email_Subscribers_Admin::es_feedback(); ?>
             <div id="poststuff">
                 <div id="post-body" class="metabox-holder column-1">
                     <div id="post-body-content">
@@ -263,8 +262,6 @@ class ES_Forms_Table extends WP_List_Table {
 
 				?>
             </h1>
-
-			<?php Email_Subscribers_Admin::es_feedback(); ?>
 
             <div id="poststuff">
                 <div id="post-body" class="metabox-holder column-1">

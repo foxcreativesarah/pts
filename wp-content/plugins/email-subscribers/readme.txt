@@ -4,8 +4,8 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Author URI: https://www.icegram.com/
 Tags: subscription, newsletter, email marketing, post notification, email newsletter form, email signup, email widget, newsletter signup, subscribe, subscription form, bulk emails, signup form, list builder, lead generation, welcome email, contacts
 Requires at least: 3.9
-Tested up to: 5.3.1
-Stable tag: 4.3.7
+Tested up to: 5.3.2
+Stable tag: 4.3.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses
 
@@ -298,6 +298,10 @@ Refer [here](https://www.icegram.com/documentation/es-faq/).
 9. Admin page - Settings Tab 4 - Security Settings
 
 == Changelog ==
+
+**4.3.8 (25.12.2019)**
+* Fix: Include Javascript issue with localised WordPress
+* Fix: Duplicate entries of contacts
 
 **4.3.7 (18.12.2019)**
 * Update: Improved import contacts functionality. Now, we are able to import ".CSV" file which contains only emails

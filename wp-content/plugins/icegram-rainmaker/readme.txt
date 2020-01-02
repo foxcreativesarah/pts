@@ -4,7 +4,7 @@ Donate link: http://www.icegram.com/
 Tags:  subscription form, contact form, lead capture, mailchimp, wpforms, blog post, builder, CRM, CSS, custom form, custom forms, database, email, email services, free WordPress plugin, form, form maker, forms, forms plugin, HTML, JavaScript, Mailpoet, landing page, list, lead, leads, list builder, MailChimp, mailing list, marketing, plugins, webhooks, WordPress, WordPress database, forms, Icegram, form builder,subscription
 Requires at least: 4.0
 Tested up to: 5.3.0
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -100,6 +100,9 @@ Coming soon!
 7. Collect leads on your WordPress site
 
 == Upgrade Notice ==
+
+= 1.1 =
+Bug Fix release
 
 = 1.0 =
 Added 'Subject' and 'Message' column to the leads dashboard
@@ -220,6 +223,9 @@ Initial Release
 
 
 == Changelog ==
+
+= 1.1 =
+* Fix: Small bug fixes
 
 = 1.0 =
 * New: Added 'Subject' and 'Message' column to the leads dashboard
