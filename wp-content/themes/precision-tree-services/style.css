@@ -1202,6 +1202,10 @@ img.alignright,
 	float: right;
 }
 
+.genesis-nav-menu > li:last-child a {
+    background-color:#f58823;
+}
+
 /* ## Accessible Menu
 --------------------------------------------- */
 
